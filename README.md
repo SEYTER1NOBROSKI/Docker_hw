@@ -31,21 +31,31 @@ docker network create my-net
 
 Run the Server container:
 ```bash
-docker run -d --name server-con --network my-net -v $(pwd):/scripts server-img sh /scripts/server.sh
+sudo docker run -it --name server-con --network my-net -v $(pwd):/scripts server-img
 ```
-* Starts in detached mode (-d)
-
-* Listens on port 9090
-
 Run the Client container:
 ```bash
-docker run --rm --name client-con --network my-net -v $(pwd):/scripts client-img sh /scripts/client.sh server-con
+sudo docker run -it --name client-con --network my-net -v $(pwd):/scripts client-img
 ```
-* Connects to server-con
+---
 
-* Sends a message and exits
+Now the two containers are working interactively, and we will need to use two terminals to work. When the container starts, the sh console starts immediately, where we can run scripts or the nc command separately.
 
-* Automatically removes itself after execution (--rm)
+Commands to strat scripts on server/client
+```bash
+./server.sh
+./client.sh name-of-server-container
+```
+Commands to start netcat:
+
+On server:
+```bash
+nc -l -k -p 9090
+```
+On client:
+```bash
+nc server-con-3 9090
+```
 
 ---
 
